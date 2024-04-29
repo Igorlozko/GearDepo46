@@ -21,7 +21,7 @@ const initialState = { // defines the initail state of the application
   priceFilter: 500,
   addressFilter: null,
   titleFilter:null,
-  filteredGears: [],
+  filteredGears: [], // filtered state which changes 
   gear:null,
   users:[],
   section:1,
@@ -43,7 +43,7 @@ const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState); // responsible  for managing the applications state using the useReducer hook, state transitions
   // created using the useRef hok to store refrences to the map and search input elements
   const mapRef = useRef(); // map refrence for using and calling back to it 
-  const searchRef = useRef();
+  const searchRef = useRef(); // search ref for the loaction
 
   const updateDateRange =(dateRange) =>{
     dispatch({type: 'UPDATE_DATE_RANGE', payload:dateRange});

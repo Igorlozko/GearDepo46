@@ -2,29 +2,30 @@ import React, { useEffect } from 'react'
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import { useValue } from '../../context/ContextProvider'
 
-const ctrl = new MapboxGeocoder({
-    marker: false,
-    accessToken: process.env.REACT_APP_MAP_TOKEN
+const ctrl = new MapboxGeocoder({ //using mapbox geocoder
+    marker: false, //no marker
+    accessToken: process.env.REACT_APP_MAP_TOKEN //token
 })
 
 const GeocoderInput = () => {
-    const {mapRef, searchRef, dispatch} =useValue();
+    const {mapRef, searchRef, dispatch} =useValue(); // getting the values from global context 
 
-    useEffect(()=>{
-        if(searchRef?.current?.children[0]){
-            searchRef.current.removeChild(searchRef.current.children[0])
+    useEffect(()=>{ // in the first render check the container if it already contains input 
+        if(searchRef?.current?.children[0]){ // if there is a first child 
+            searchRef.current.removeChild(searchRef.current.children[0]) // removes child 
         }
-        searchRef.current.appendChild(ctrl.onAdd(mapRef.current.getMap())) // connects geo coder with the map
+        //injects the geocoder and matces it witht he map
+        searchRef.current.appendChild(ctrl.onAdd(mapRef.current.getMap())) // connects geo coder with the map adding search inuts 
 
-        ctrl.on('result', (e)=>{
-            const coords = e.result.geometry.coordinates
+        ctrl.on('result', (e)=>{ // a listner when a result recieve an event to extract the location of the result 
+            const coords = e.result.geometry.coordinates // extracting the result co ordinates
             dispatch({
-                type:'FILTER_ADDRESS',
-                payload:{lng:coords[0], lat:coords[1]}
+                type:'FILTER_ADDRESS', // dispatching to change the state
+                payload:{lng:coords[0], lat:coords[1]} //passign the payload
             })
         })
 
-         ctrl.on('clear', ()=> dispatch({type:'CLEAR_ADDRESS'}))
+         ctrl.on('clear', ()=> dispatch({type:'CLEAR_ADDRESS'})) // listner to  clears the address resetting to default values
     }, [])
 
   return (
@@ -47,5 +48,7 @@ https://www.youtube.com/watch?v=98BzS5Oz5E4&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLI
 https://www.youtube.com/watch?v=Ldw3mFGyjDE&list=PL86WBCjNmqh5HQInLsyYW7g76_6eKcQLf
 https://www.youtube.com/watch?v=R5RoYDEIhCI&list=PLy1nL-pvL2M5xNIuNapwmABwEy2uifAlY
 https://www.youtube.com/watch?v=1vpwfDDyINk&list=PLyzY2l387AlMy6r_JhflipKqKrhVK17gP
+https://www.youtube.com/watch?v=ZxxZ3kpk5tU
+https://www.youtube.com/watch?v=9tFOGC2LPq0
 Assistance from chatgpt was also used 
 */

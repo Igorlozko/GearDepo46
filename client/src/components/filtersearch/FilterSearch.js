@@ -5,7 +5,12 @@ import PriceSlider from './PriceSlider'
 import { useValue } from '../../context/ContextProvider'
 import SearchByTitle from './SearchByTitle'
 
-const DrawerHeader = styled('div')(({theme})=>({
+//https://mui.com/material-ui/api/drawer/
+//https://github.com/mui/material-ui/issues/11006
+
+// this is the drawer compnment holds all the 
+
+const DrawerHeader = styled('div')(({theme})=>({ // defines the styling for the drawer header(recieving the theme)
   display:'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -13,16 +18,16 @@ const DrawerHeader = styled('div')(({theme})=>({
   ...theme.mixins.toolbar,
 }))
 
-const FilterSearch = ({isOpen, setIsOpen}) => {
+const FilterSearch = ({isOpen, setIsOpen}) => { //props passed from the 
 
-  const {searchRef} = useValue();
-  const {searchTerm} = useValue();
+  const {searchRef} = useValue(); // value from the glabal context
+  const {searchTerm} = useValue(); // not working at the moment 
 
   return (
-    <Drawer
-      variant='persistent'
+    <Drawer // from mui
+      variant='persistent' // doesnt close automaticly 
       hideBackdrop={true}
-      open={isOpen}
+      open={isOpen} // controls the state of the drawer
       //anchor="top" // Set anchor to top
     >
       

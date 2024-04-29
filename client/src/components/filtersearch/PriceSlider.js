@@ -1,52 +1,35 @@
-import { Box, Slider, Typography } from '@mui/material'
-import React from 'react'
-import { useValue } from '../../context/ContextProvider'
+import { Box, Typography, Button } from '@mui/material';
+import React from 'react';
+import { useValue } from '../../context/ContextProvider';
 
+const prices = [0, 10, 20, 30, 40, 50, 60,70,80,90,100,150,200]; // Defining prices options
 
+const CustomPriceSelector = () => {
+    // Extract state and dispatch function from the context
+    const { state: { priceFilter }, dispatch } = useValue();
 
-const marks=[
-    {value:0, label: '€0'},
-    {value:250, label: '€250'},
-    {value:500, label: '€500'},
-]
+    const handlePriceSelect = (price) => { // function handles and disptaches the change in price
+        dispatch({ type: 'FILTER_PRICE', payload: price }); // passing the price payload to the global state 
+    };
 
-const PriceSlider = () => {
+    return (
+        <Box sx={{ mt: 5 }}>
+            <Typography>Price below:</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                {prices.map((price) => ( // maps the prices in a column 
+                    <Button
+                        key={price} //assigns a key 
+                        variant={priceFilter === price ? 'contained' : 'outlined'} //displaying either conained or outlined if blue then selected signifying the button is active
+                        color="primary"
+                        onClick={() => handlePriceSelect(price)} // an event occurs on the click triggering a handlepriceselect
+                        sx={{ mb: 1 }}
+                    >
+                        {`€${price}`}
+                    </Button>
+                ))}
+            </Box>
+        </Box>
+    );
+};
 
-const {state:{priceFilter}, dispatch} = useValue();
-
-  return (
-    <Box
-        sx={{mt:5}}
-    >
-        <Typography>Price : {'€' + priceFilter}</Typography>
-        <Slider 
-            min={0}
-            max={500}
-            defaultValue={100}
-            valueLabelDisplay='auto'  // can see it 
-            marks={marks}
-            value={priceFilter}
-            onChange={(e, price)=> dispatch ({type:'FILTER_PRICE', payload:price})}
-        />
-
-    </Box>
-  )
-}
-
-export default PriceSlider
-
-/*
-The following sources helped to shape and create the following code 
-https://www.youtube.com/watch?v=MpQbwtSiZ7E
-https://www.youtube.com/watch?v=k3Vfj-e1Ma4&t=9062s
-https://www.youtube.com/watch?v=YdBy9-0pER4&t=45609s
-https://www.youtube.com/watch?v=CvCiNeLnZ00&t=7695s
-https://www.youtube.com/watch?v=72iEz5iopqQ&t=770s
-https://www.youtube.com/watch?v=eJ3YysWaP_A
-https://www.youtube.com/watch?v=ANZNMaBODDY&list=PLufbXXGswL_pS6rdWbDO56oiZovLWE_rs
-https://www.youtube.com/watch?v=98BzS5Oz5E4&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE
-https://www.youtube.com/watch?v=Ldw3mFGyjDE&list=PL86WBCjNmqh5HQInLsyYW7g76_6eKcQLf
-https://www.youtube.com/watch?v=R5RoYDEIhCI&list=PLy1nL-pvL2M5xNIuNapwmABwEy2uifAlY
-https://www.youtube.com/watch?v=1vpwfDDyINk&list=PLyzY2l387AlMy6r_JhflipKqKrhVK17gP
-Assistance from chatgpt was also used 
-*/
+export default CustomPriceSelector;

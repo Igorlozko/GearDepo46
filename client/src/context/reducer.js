@@ -49,27 +49,27 @@ const reducer = (state, action) => {
 
     case 'RESET_GEAR': // this is the reset part of the gear which sets everything back to null
       return{...state, images:[], details:{title:'', description:'', price:0}, location:{lng:0, lat:0},updatedGear:null }; 
-    case 'RESET_RESERVATION':
+    case 'RESET_RESERVATION': // resetting the reservation to default
       return{...state, reservation:[],reservations :[],resDetails:{phone:'',purpose:'', addinfo:''},dateRange: [new Date(), new Date()],paymentMethodId: null  }
       
-    case 'UPDATE_GEARS':
+    case 'UPDATE_GEARS': // when seacrhed for a gear filling the filtered gears array
       return{...state, gears: action.payload, addressFilter: null, priceFilter: 100, filteredGears: action.payload, deletedImages:[], addedImages:[]};  // resetting location and price to default values
       
     case 'UPDATE_RESERVATIONS':
       return{...state, reservations:action.payload };
 
-    case 'FILTER_PRICE':
+    case 'FILTER_PRICE': // filters the price updates the values
         return {...state, priceFilter: action.payload, filteredGears: applyFilter(
-          state.gears,
-          state.addressFilter,
-          action.payload
+          state.gears, //passing the gears 
+          state.addressFilter, //passing the address
+          action.payload // and the new price
         )};  
 
-    case 'FILTER_ADDRESS':
+    case 'FILTER_ADDRESS': // filters the address updates the values
       return{...state, addressFilter: action.payload, filteredGears: applyFilter(
         state.gears,
         action.payload,
-        state.priceFilter
+        state.priceFilter // and the new price
       )};
 
       case 'FILTER_TITLE':
@@ -84,7 +84,7 @@ const reducer = (state, action) => {
           ),
         };
 
-    case 'CLEAR_ADDRESS':
+    case 'CLEAR_ADDRESS': // action to clear the address and the filters and filtered rooms to be the same in the state
       return{...state, addressFilter: null, priceFilter: 100, filteredGears: state.gears};
       
     case 'UPDATE_GEAR':
@@ -117,32 +117,32 @@ const reducer = (state, action) => {
 
 export default reducer;
 
-const applyFilter = (gears, address, price,title) =>{
-  let filteredGears = gears
-  if(address){
-    const {
+const applyFilter = (gears, address, price,title) =>{ // recieving the parameters being filtered
+  let filteredGears = gears // new variable 
+  if(address){ //if there is an object 
+    const { // extract location 
       lng, 
       lat
     } = address
-    filteredGears = filteredGears.filter(gear => {
-      const lngDif = lng > gear.lng ? lng - gear.lng : gear.lng - lng
-      const latDif = lat > gear.lat ? lat - gear.lat : gear.lat - lat
+    filteredGears = filteredGears.filter(gear => { //filtering 
+      const lngDif = lng > gear.lng ? lng - gear.lng : gear.lng - lng //difference 
+      const latDif = lat > gear.lat ? lat - gear.lat : gear.lat - lat//difference
 
       return lngDif <= 1 && latDif <= 1 
 
     });
   }
 
-  if(price < 100){
-    filteredGears = filteredGears.filter(gear => gear.price <= price)
+  if(price < 100){ // if price lsess then 100 filter 
+    filteredGears = filteredGears.filter(gear => gear.price <= price) //filter gears and include the gear with the price 
   }
 
-  if (title) {
+  if (title) { // searching by title 
     const searchTerm = title.toLowerCase();
     filteredGears = filteredGears.filter(gear => gear.title.toLowerCase().includes(searchTerm));
   }
 
-  return filteredGears
+  return filteredGears // returning the array 
 
 }
 

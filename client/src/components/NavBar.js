@@ -12,7 +12,7 @@ import { Lock, Menu } from '@mui/icons-material';
 import { useValue } from '../context/ContextProvider';
 import UserIcons from './user/UserIcons';
 import FilterSearch from './filtersearch/FilterSearch';
-import Logo2 from './Logo2.png'; 
+import logo4 from './logo4.png'; 
 import { Link } from 'react-router-dom';
 import TuneIcon from '@mui/icons-material/Tune';
 import LoginIcon from '@mui/icons-material/Login';
@@ -26,7 +26,8 @@ const NavBar = () => {
   //returns an object containing the current state currentUser and the dispatch function.
   // extracts current user from the state object and assgins it to a variable named currentUser and extracts dispatch function
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // state which controls the state of the drawer for search and filter
+  //default value is closed
 
 // toolbar is used a container for the other elements disabled gutters removes padding 
   return (
@@ -34,12 +35,12 @@ const NavBar = () => {
       <AppBar position="static" sx={{ backgroundColor: 'white', color: 'black', boxShadow: 'none', }}>
         <Container maxWidth="lg">
           <Toolbar disableGutters>
-            <IconButton size="small" color="primary" onClick={()=>setIsOpen(true)}>
+            <IconButton size="small" color="primary" onClick={()=>setIsOpen(true)}>{/**onclick toggles the sidebar to open setting the state to true */}
               <TuneIcon sx={{mr:1}} /> Filters
             </IconButton>
             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
               <Link to="/">
-                <img src={Logo2} alt="Logo2" style={{ height: 50 }} />
+                <img src={logo4} alt="logo4" style={{ height: 60 }} />
               </Link>
             </Box>
             {!currentUser ? ( // condition if not the current user then show log in 
@@ -57,6 +58,7 @@ const NavBar = () => {
           </Toolbar>
         </Container>
       </AppBar>
+      {/**passing the states of the drarer */}
       <FilterSearch {...{isOpen, setIsOpen}}/>
     </>
   );
