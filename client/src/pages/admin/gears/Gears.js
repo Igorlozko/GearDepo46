@@ -7,27 +7,34 @@ import moment from 'moment';
 import { grey } from '@mui/material/colors';
 import { getGears } from '../../../actions/gear';
 import isAdmin from '../utils/isAdmin';
+//https://www.youtube.com/watch?v=ibOz6Lz40xU&list=PLwP3cL-MKVkNM28X96Dhc3BLMhtUktiik
+//https://www.youtube.com/watch?v=hCGiyI_NmRY&pp=ygUNbXVpIGRhYXNoYm9hcg%3D%3D
+//https://www.youtube.com/watch?v=fzxEECHnsvU&t=76s&pp=ygUNbXVpIGRhYXNoYm9hcg%3D%3D
+
+
+//Responsible fro displaying the gears bloning to the user.
 
 const Gears = ({ setSelectedLink, link }) => {
   const {
     state: { gears, currentUser },
     dispatch,
-  } = useValue();
+  } = useValue(); // extracts the global state variables 
 
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(5); // sets the page size
 
   useEffect(() => {
     setSelectedLink(link);
-    if (gears.length === 0) getGears(dispatch);
+    if (gears.length === 0) getGears(dispatch); // if there are no gears fetch gears from the bakend 
   }, []);
 
-  const columns = useMemo(
+  const columns = useMemo( // responsible for shoing the fields on the gears 
     () => [
       {
         field: 'images',
         headerName: 'Photo',
         width: 100,
-        renderCell: (params) => <Avatar src={params.row.images[0]} variant='rounded' />,
+        //params is the cell parameters contains info about row,cell etc
+        renderCell: (params) => <Avatar src={params.row.images[0]} variant='rounded' />, //rendercell defines ho the ell should be rendered
         sortable: false,
         filterable: false,
       },
@@ -78,7 +85,7 @@ const Gears = ({ setSelectedLink, link }) => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={isAdmin(currentUser) ? gears : gears.filter(gear => gear.uid === currentUser.id )} // if admin or editor show whole rooms if basic just their own rooms
+        rows={ gears.filter(gear => gear.uid === currentUser.id )} // return users gears only theirs due to gear id and user id matching 
         getRowId={(row) => row._id}
         rowsPerPageOptions={[5, 10, 20]}
         pageSize={pageSize}
@@ -88,7 +95,7 @@ const Gears = ({ setSelectedLink, link }) => {
           bottom: params.isLastVisible ? 0 : 5,
         })}
         sx={{
-          [`& .${gridClasses.row}`]: {
+          [`& .${gridClasses.row}`]: { // the color of the grid
             bgcolor: (theme) =>
               theme.palette.mode === 'light' ? grey[200] : grey[900],
           },

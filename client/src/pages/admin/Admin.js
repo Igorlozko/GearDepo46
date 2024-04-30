@@ -18,9 +18,11 @@ import { Home } from '@mui/icons-material';
 import Protected from '../../components/protected/Protected'
 import Login from '../../components/user/Login'
 
+//https://mui.com/store/collections/free-react-dashboard/
+
 const drawerWidth = 240;
 
-const AppBar = styled(MuiAppBar, {
+const AppBar = styled(MuiAppBar, { // the styling for the app bar taen from the MUI library
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -42,10 +44,10 @@ const AppBar = styled(MuiAppBar, {
 
 
 export default function Admin() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // states for the drawer
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpen(true); // function which changes the state of the drwarer opening to true
   };
 
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ export default function Admin() {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handleDrawerOpen} // button which handles the opening and closing of the drawer
             edge="start"
             sx={{
               marginRight: 5,

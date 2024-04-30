@@ -93,9 +93,6 @@ const reducer = (state, action) => {
     case 'UPDATE_USERS':
       return{...state, users:action.payload};  
 
-    case 'DELETE_GEAR':
-      return{...state, gears:state.gears.filter((gear) => gear._id !== action.payload),};
-
     case 'UPDATE_SECTION':
       return{...state, section: action.payload};
 

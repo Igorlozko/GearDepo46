@@ -26,15 +26,6 @@ export const getGears = tryCatch(async (req, res) =>{ // recieving req and res
     res.status(200).json({success: true, result: gears }); // response if succeess 
 });
 
-export const deleteGear = tryCatch(async(req, res) =>{
-    const {_id} = await Gear.findByIdAndDelete(req.params.gearId);
-    res.status(200).json({success: true, result: {_id}});
-});
-
-export const updateGear = tryCatch(async(req, res)=>{
-    const updatedGear = await Gear.findByIdAndUpdate(req.params.gearId, req.body, {new:true})
-    res.status(200).json({success: true, result: updatedGear})
-})
 
 
 /*

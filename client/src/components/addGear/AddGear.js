@@ -5,7 +5,7 @@ import AddDetails from './addDetails/AddDetails';
 import AddImages from './addImages/AddImages';
 import { useValue } from '../../context/ContextProvider';
 import { Cancel, Send } from '@mui/icons-material';
-import { clearGear, createGear, updateGear } from '../../actions/gear';
+import { clearGear, createGear } from '../../actions/gear';
 import { useNavigate } from 'react-router-dom';
 
 // Adding gear on the website 
@@ -94,21 +94,15 @@ const AddGear = () => {
             contactPhone: details.contactPhone,
             images,
         };
-        if(updatedGear) return updateGear(gear,currentUser, dispatch, updatedGear, deletedImages)
         //sending all the gear object and user and dispatch to the actions 
         createGear(gear, currentUser, dispatch );
     };
 
     const navigate = useNavigate();
 
-    const handleCancel = ()=>{
-        if(updatedGear){
-            navigate('/admin/gears')
-            clearGear(dispatch, currentUser, addedImages, updatedGear)
-        }else{
+    const handleCancel = ()=>{ // function which handle the cancellation of gear upload 
             dispatch({type:'UPDATE_SECTION', payload:0})
             clearGear(dispatch, currentUser, images)
-        }
     }
 
   return (

@@ -16,7 +16,7 @@ const BottomNav = () => {
         ref.current.ownerDocument.body.scrollTop = 0; // hook used to scroll to the top of the page whenever the section state changes
     }, [section]);
 
-    const isAdminOrEditor = currentUser && (currentUser.role === 'admin' || currentUser.role === 'editor'); // conditional block to determine who can see the icons
+    const isAdminOrEditor = currentUser && (currentUser.role === 'basic' || currentUser.role === 'admin'|| currentUser.role === 'admin'); // conditional block to determine who can see the icons
 
     return (
         <Box>

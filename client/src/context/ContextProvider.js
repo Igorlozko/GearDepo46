@@ -56,20 +56,6 @@ const ContextProvider = ({ children }) => {
       dispatch({type:'UPDATE_USER', payload: currentUser}); // updates the user state and the payload
     }
   },[]);
-//If a user is logged in, it retrieves gear-related data from localStorage and updates the state accordingly.
-  useEffect(()=>{
-    if(state.currentUser){
-      const gear = JSON.parse(localStorage.getItem(state.currentUser.id))
-      if(gear){
-        dispatch({type:'UPDATE_LOCATION', payload:gear.location})
-        dispatch({type:'UPDATE_DETAILS', payload:gear.details})
-        dispatch({type:'UPDATE_IMAGES', payload:gear.images})
-        dispatch({type:'UPDATE_UPDATED_GEAR', payload:gear.updatedGear})
-        dispatch({type:'UPDATE_DELETED_IMAGES', payload:gear.deletedImages})
-        dispatch({type:'UPDATE_ADDED_IMAGES', payload:gear.addedImages})
-      }
-    }
-  },[state.currentUser])
   //component returns a Context.Provider wrapping the children components, providing access to the state, dispatch function, mapRef, searchRef, and updateDateRange function via the context value.
   return (
     <Context.Provider value={{ state, dispatch, mapRef, searchRef, updateDateRange }}>{children}</Context.Provider> // componments made access able to child componments 

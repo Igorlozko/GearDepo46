@@ -5,7 +5,6 @@ import { useValue } from '../../context/ContextProvider';
 import useCheckToken from '../../hooks/useCheckToken';
 import Profile from './Profile';
 import { useNavigate } from 'react-router-dom';
-import { storeGear } from '../../actions/gear';
 import { logout } from '../../actions/user';
 
 const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => { // pass properties of usermenu anchor where it should be related to apperaing next to that element 
@@ -19,20 +18,8 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => { // pass properties
   const navigate = useNavigate();
 
   const handleLogout =()=>{
-    storeGear(location, details, images, updatedGear, deletedImages, addedImages, currentUser.id)
     logout(dispatch)
   }
-
-  useEffect(()=>{
-    const storeBeforeLeave = (e)=>{
-      if(storeGear(location, details, images, updatedGear, deletedImages, addedImages, currentUser.id)){
-        e.preventDefault()
-        e.returnValue=true
-      }
-    }
-    window.addEventListener('beforeunload', storeBeforeLeave)
-    return ()=>window.removeEventListener('beforeunload', storeBeforeLeave)
-  },[location, details, images])
 
   return (
     <>
@@ -58,7 +45,7 @@ const UserMenu = ({ anchorUserMenu, setAnchorUserMenu }) => { // pass properties
         </MenuItem>
         )}
         <MenuItem
-          onClick={() => navigate('admin')}
+          onClick={() => navigate('admin')} // navigates to the admin route 
         >
           <ListItemIcon>
             <Dashboard fontSize="small" />

@@ -9,8 +9,6 @@ const ImagesList = () => {
 
     const handleDelete = async(image)=>{
         dispatch({type:'DELETE_IMAGE', payload:image});//dispatch action to delete the imaage payload is the image
-        // stop if updated gear
-        if(updatedGear)return dispatch({type:'UPDATE_DELETED_IMAGES', payload:[images]}); // pass deleted images into deleted images array
         const imageName = image?.split(`${currentUser?.id}%2F`)[1]?.split('?')[0] //extracts and  delets image from firebase storage
         //extracting image name and spliting the url
         try{

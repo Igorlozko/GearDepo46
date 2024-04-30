@@ -39,27 +39,6 @@ const Reservations = ({ setSelectedLink, link }) => {
   ], []);
 
   const filteredReservations = useMemo(() => {
-    if (isAdmin(currentUser)) {
-      return reservations.map((reservation, index) => ({
-        ...reservation,
-        gearTitle: gears.find((gear) => gear._id === reservation.gearId)?.title || 'Unknown',
-        gearPhoto: gears.find((gear) => gear._id === reservation.gearId)?.images?.[0] || '',
-        _id: index + 1, // Assign a unique id to each reservation
-      }));
-    }
-  
-    if (isEditor(currentUser)) {
-      const editorGearIds = gears
-        .filter(gear => gear.uid === currentUser.id)
-        .map(gear => gear._id);
-      return reservations.map(reservation => ({
-        ...reservation,
-        gearTitle: gears.find(gear => gear._id === reservation.gearId)?.title || 'Unknown',
-        gearPhoto: gears.find(gear => gear._id === reservation.gearId)?.images?.[0] || '' // Ensure images array exists and access the first image
-      })).filter(reservation => 
-        editorGearIds.includes(reservation.gearId) || reservation.rName === currentUser.name
-      );
-    }
   
     // For basic users, filter reservations based on their name
     return reservations.map(reservation => ({

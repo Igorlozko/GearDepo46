@@ -36,7 +36,6 @@ export const login = tryCatch(async(req, res)=>{ // the login process function w
         if(!correctPassword) return res.status(400).json({success:false, message:'Invalid credentails'})//throws error
 
     const {_id:id,name,photoURL, role, active} = existedUser; // extracting the user object nd assignming it 
-    if(!active) return res.status(400).json({success:false, message:'Account suspended ! Contact Admin'})
     const token = jwt.sign({id, name, photoURL,role}, process.env.JWT_SECRET, {expiresIn: '1h'});
     res.status(200).json({success:true, result:{id, name, email:emailLowerCase, photoURL, token, role, active}}); // success message
 });
@@ -58,11 +57,6 @@ export const getUsers = tryCatch(async (req, res) =>{
     res.status(200).json({success: true, result: users });
 });
 
-export const updateStatus = tryCatch(async(req, res)=>{
-    const {role, active,renter} = req.body // extract the role, active, and the renter from the req body
-    await User.findByIdAndUpdate(req.params.userId, {role, active,renter}); // this updates the user model passing the new valuues
-    res.status(200).json({success:true, result:{_id:req.params.userId}}) // send a response to the client side
-});
 
 
 /*

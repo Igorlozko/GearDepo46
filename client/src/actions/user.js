@@ -86,6 +86,7 @@ export const updateProfile = async(currentUser, UpdatedFields, dispatch)=>{ // r
     dispatch({type:'END_LOADING'}); // endling the loading screen 
 };
 
+//this function retriesw the users from the database backend 
 export const getUsers = async(dispatch, currentUser)=>{
     const result = await fetchData({url, method:'GET', token:currentUser.token}, dispatch)
     if(result){
@@ -93,17 +94,7 @@ export const getUsers = async(dispatch, currentUser)=>{
     }
 };
 
-export const updateStatus = (updatedFields, userId, dispatch,currentUser)=>{
-    return fetchData({
-        url: `${url}/updateStatus/${userId}`,
-        method:'PATCH',
-        token:currentUser.token,
-        body:updatedFields,
-        
-    },
-    dispatch
-    );
-}
+
 
 export const logout = (dispatch)=>{
     dispatch({type:'UPDATE_USER', payload:null})

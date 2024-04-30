@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getUsers, login, register, updateProfile, updateStatus } from '../controllers/user.js';
+import { getUsers, login, register, updateProfile,} from '../controllers/user.js';
 import auth from '../middleware/auth.js';
 import checkAccess from '../middleware/checkAccess.js';
 import userPerm from '../middleware/permissions/user/userPerm.js';
@@ -10,7 +10,7 @@ userRouter.post('/register', register); // listnes to post request  and passing 
 userRouter.post('/login', login); // login end point 
 userRouter.patch('/updateProfile', auth, updateProfile); // patch for updating,passing auth in order to verify that same user is changing the info,  passing function update profile
 userRouter.get('/',auth, checkAccess(userPerm.listUsers), getUsers); // admin and editor route permission
-userRouter.patch('/updateStatus/:userId',auth, checkAccess(userPerm.updateStatus), updateStatus); // route so that only admin can change the rights
+ // route so that only admin can change the rights
 
 
 export default userRouter;

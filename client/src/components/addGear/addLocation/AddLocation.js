@@ -15,9 +15,6 @@ const AddLocation = () => {
     const mapRef = useRef(); //creating refrence for the map 
     //map
     useEffect(()=>{ 
-        const storedLocation = JSON.parse(localStorage.getItem(currentUser.id))?.location
-        //if the location are 0 then use ab abi to find the location
-        if(!lng && !lat & !storedLocation?.lng && !storedLocation?.lat){
             //fecth allows to find the location
             fetch('https://ipapi.co/json')
             //waits for the promise and recives the response 
@@ -28,9 +25,6 @@ const AddLocation = () => {
                 //recieving and moving map 
                 dispatch({type:'UPDATE_LOCATION', payload:{lng:data.longitude, lat:data.latitude}}); //updating the location from recieved data 
             })
-        }else{
-
-        }
     },[mapRef]);
 
     useEffect(()=>{

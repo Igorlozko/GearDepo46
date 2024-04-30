@@ -9,12 +9,9 @@ import GearPage from '../components/gear/GearPage';
 const Home = () => {
   return (
     <>
-      {/*<Loading /> */}
-     {/* <Notification />*/}
       <Login />
       <NavBar />
       <BottomNav/>
-     {/* <GearPage/>*/}
     </>
   );
 };

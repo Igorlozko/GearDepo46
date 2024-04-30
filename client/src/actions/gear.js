@@ -1,4 +1,4 @@
-import deleteImages from "./utils/deleteImages";
+
 import fetchData from "./utils/fetchData"
 
 const url = process.env.REACT_APP_SERVER_URL + '/gear' // constructs the url for the api end point where the gear creation request if being sent to 
@@ -33,52 +33,10 @@ export const getGears = async(dispatch)=>{
     console.log("Printing the result :" , result)
 };
 
-export const deleteGear = async(gear, currentUser, dispatch) =>{
-    dispatch({type: 'START_LOADING'})
-
-    const result = await fetchData({
-        url:`${url}/${gear._id}`,
-        method:'DELETE',
-        token:currentUser?.token
-    }, dispatch)
-
-    if(result){ // function responsible for creating the room
-        dispatch({type:'UPDATE_ALERT', payload:{open:true, severity:'success', message:'Gear has been deleted successfully'}});
-        dispatch({type: 'DELETE_GEAR', payload:result._id});
-        deleteImages(gear.images, gear.uid);
-    }
-
-    dispatch({type: 'END_LOADING'});
-};
-
-export const updateGear = async(gear, currentUser, dispatch, updatedGear, deletedImages) =>{
-    dispatch({type: 'START_LOADING'})
-
-    const result = await fetchData({
-        url:`${url}/${updatedGear._id}`,
-        method:'PATCH',
-        body:gear,
-        token:currentUser?.token
-    }, dispatch)
-
-    if(result){ // function responsible for creating the room
-        dispatch({type:'UPDATE_ALERT', payload:{open:true, severity:'success', message:'Gear has been updated successfully'}});
-        clearGear(dispatch, currentUser, deletedImages, updatedGear);
-        dispatch({type: 'UPDATE_SECTION', payload:0});
-        dispatch({type: 'UPDATE_GEAR', payload:result});
-    }
-
-    dispatch({type: 'END_LOADING'});
-};
 
 export const clearGear = (dispatch, currentUser, images=[], updatedGear=null)=>{
     dispatch({type:'RESET_GEAR'});
-    localStorage.removeItem(currentUser.id)
-    if(updatedGear){
-        deleteImages(images, updatedGear.uid)
-    }else{
-        deleteImages(images, currentUser.id)
-    }
+    localStorage.removeItem(currentUser.id) // resets and removes the gear 
 };
 
 export const storeGear = (location, details, images, updatedGear, deletedImages, addedImages, userId)=>{

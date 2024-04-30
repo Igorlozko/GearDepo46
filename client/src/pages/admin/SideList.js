@@ -8,10 +8,11 @@ import Main from './main/Main';
 import Gears from './gears/Gears';
 
 import Requests from './reservations/Reservations';
-import { storeGear } from '../../actions/gear';
 import { logout } from '../../actions/user';
 import useCheckToken from '../../hooks/useCheckToken'
 import isAdmin from './utils/isAdmin';
+
+// This is the sidelist part of the admin board which helspp users navigate through their reservatons and their gears 
 
 const drawerWidth = 240;
 
@@ -65,6 +66,8 @@ const openedMixin = (theme)=> ({
     }),
   );
 
+  // Functions above are taken from the MUI dashbaord componemnt 
+
 const SideList = ({open, setOpen}) => {
 
   useCheckToken(); // hook check if the token is still valid if not logs out 
@@ -73,20 +76,20 @@ const SideList = ({open, setOpen}) => {
     const {state:{currentUser, location, details, images, updatedGear, deletedImages, addedImages}, dispatch} = useValue();
 
     // the state that highlists which tab is being used 
-    const [selectedLink, setSelectedLink] = useState('');
+    const [selectedLink, setSelectedLink] = useState('gears'); // default is the link of the main conponment 
 
-    const list = useMemo(()=>[
+    const list = useMemo(()=>[ // use memo used to remeber the values in the first render depending on the role
 
       ...isAdmin(currentUser) ? [ // now these componments will only appear is the uer is admin or editor (renter)
       ] : [],
+      // sets the selected lik to gears 
         {title:'Gears', icon:<BikeScooter/>, link:'gears', component:<Gears {...{setSelectedLink, link:'gears'}}/>},
         {title:'Resevations', icon:<LibraryBooksRounded/>, link:'reservations', component:<Requests {...{setSelectedLink, link:'resevations'}}/>},
     ], [currentUser])
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // used to forard user to home
 
-    const handleLogout = ()=>{
-      storeGear(location, details, images, updatedGear, deletedImages, addedImages, currentUser.id)
+    const handleLogout = ()=>{ // function responsible for loging the user out 
       logout(dispatch)
     }
 
@@ -100,7 +103,7 @@ const SideList = ({open, setOpen}) => {
         </DrawerHeader>
         <Divider />
         <List>
-          {list.map((item) => (
+          {list.map((item) => ( // ths maps the componments one by one 
             <ListItem key={item.title} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -108,8 +111,8 @@ const SideList = ({open, setOpen}) => {
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
-                onClick={()=>navigate(item.link)}
-                selected={selectedLink === item.link}
+                onClick={()=>navigate(item.link)} // navigates based on the click of the componment 
+                selected={selectedLink === item.link} // when the button is pressed selected item is highlighted 
               >
                 <ListItemIcon
                   sx={{
@@ -118,7 +121,7 @@ const SideList = ({open, setOpen}) => {
                     justifyContent: 'center',
                   }}
                 >
-                  {item.icon}
+                  {item.icon} 
                 </ListItemIcon>
                 <ListItemText primary={item.title} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -128,15 +131,14 @@ const SideList = ({open, setOpen}) => {
         <Divider />
         <Box sx={{mx:'auto', mt:3, mb:1}}>
                 <Tooltip title={currentUser?.name || ''} >
-                    <Avatar
-                        src={currentUser?.photoURL}
+                    <Avatar //importing the avatar of the user 
+                        src={currentUser?.photoURL} //photo of the user
                         {...(open && {sx:{width:100, height:100}})}
                     />
                 </Tooltip>
         </Box>
         <Box sx={{textAlign:'center'}}>
             {open && <Typography>{currentUser?.name}</Typography>}
-            <Typography variant='body2' >{currentUser?.role || 'role'}</Typography>
             {open && <Typography variant='body2'>{currentUser?.email}</Typography>}
             <Tooltip title='Logout'sx={{mt:1}}>
                 <IconButton onClick={handleLogout}>
@@ -148,17 +150,13 @@ const SideList = ({open, setOpen}) => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Routes>
-            {list.map(item=>(
+            {list.map(item=>( // routing componments maps sthe componments 
                 <Route key={item.title} path={item.link} element={item.component} />
             ))}
             <Route 
               path='*' 
               element = {
-                isAdmin(currentUser) ? (
-              <Main {...{setSelectedLink, link:''}}/>
-            ) : (
               <Gears {...{setSelectedLink, link:'gears'}} />
-            )
           }
           />
         </Routes>
