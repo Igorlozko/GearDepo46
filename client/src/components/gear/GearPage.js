@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Box, Button, Container, Dialog, Divider, IconButton, Rating, Slide, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Container, Dialog, Divider, Grow, IconButton, Rating, Slide, Stack, Toolbar, Typography } from '@mui/material';
 import { useValue } from '../../context/ContextProvider';
 import { forwardRef } from 'react';
 import { Close, StarBorder } from '@mui/icons-material';
@@ -11,43 +11,45 @@ import { Link, useNavigate } from 'react-router-dom';
 import AddReservations from '../reservations/AddReservations.js';
 import Protected from '../protected/Protected';
 
-const Transition = forwardRef((props, ref) => {
-  return <Slide direction='up' {...props} ref={ref} />;
+const Transition = forwardRef((props, ref) => { // recievs two parmeters 
+  return <Grow ref={ref} {...props} />; // dialog grows from the clicked gear passing ref 
 });
 
 const GearPage = () => {
-  const { state: { gear,user }, dispatch } = useValue();
-  const [place, setPlace] = useState(null);
+  const { state: { gear,user }, dispatch } = useValue(); //inital state is null closed 
+  const [place, setPlace] = useState(null); // initial state of place
   const [map, setMap] = useState(null);
   const [showAddReservations, setShowAddReservations] = useState(false); // State variable to manage the visibility of the reservation model
 
-  useEffect(() => {
-    if (gear) {
+  useEffect(() => { // getting the place name 
+    if (gear) { // if the gear object is present 
       const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${gear.lng},${gear.lat}.json?access_token=${process.env.REACT_APP_MAP_TOKEN}`;
       fetch(url)
-        .then(response => response.json())
-        .then((data) => {
-          setPlace(data.features[0]);
+        .then(response => response.json()) // fecth function sends url to map box and when promise is resolved in json format 
+        .then((data) => { // recieve the oject as data parameter 
+          setPlace(data.features[0]); // setting and extracting the place 
           initializeMap(data.features[0].center);
+          //add the marker
         });
     }
   }, [gear]);
 
   const handleClose = () => {
-    dispatch({ type: 'UPDATE_GEAR', payload: null });
+    dispatch({ type: 'UPDATE_GEAR', payload: null }); // sets everyhing back to null
     // Close and reset the reservation model
     setShowAddReservations(false);
   };
-
+// this function is responsible for showing the map box map itht he marker 
   const initializeMap = (center) => {
     mapboxgl.accessToken = process.env.REACT_APP_MAP_TOKEN;
+    //creating the map box instance with object configs
     const map = new mapboxgl.Map({
       container: 'map',
       style: "mapbox://styles/igorlozko/clskovgwk01oe01qsbhb6f5f7",
       center: center,
       zoom: 12
     });
-    new mapboxgl.Marker()
+    new mapboxgl.Marker() //addign the marker depending on the center onject rescieved 
       .setLngLat(center)
       .addTo(map);
     setMap(map);
@@ -55,7 +57,7 @@ const GearPage = () => {
 
   const handleBookNow = () => {
     // Logic to handle booking
-    // For now, let's just show the AddReservations component
+    // For now, showing the AddReservations component
     console.log("Selected gear ID in Gear page:", gear._id);
     setShowAddReservations(true);
   };
@@ -66,16 +68,18 @@ const GearPage = () => {
 
   return (
     <Dialog
-      fullScreen
-      open={Boolean(gear)}
-      onClose={handleClose}
-      TransitionComponent={Transition}
+      fullScreen //declaring the pop up to be fullscreen
+      open={Boolean(gear)} // a state if the gear is open or closed default valu is null if object then true
+      onClose={handleClose} // function responsible for closing the dialog 
+      TransitionComponent={Transition} // slides dialog from bottom to up
+      transitionDuration={300}
     >
       <IconButton
         color='black'
-        onClick={handleClose}
+        onClick={handleClose} // carries out the action for closing the pop up
         elevation={0}
       >
+        {/*This is the part of the pop up with closes the dialog */}
         <AppBar position='relative' elevation={0} sx={{ backgroundColor: ' #ff4e53', borderRadius: '20px 20px 0 0' }}>
           <Toolbar  sx={{ justifyContent: 'center' }}>
             <Close/>
@@ -84,11 +88,12 @@ const GearPage = () => {
           <Divider/>
         </AppBar>
       </IconButton>
+      {/*This is the container containing all the information for the gear */}
       <Container sx={{pt:1}}>
         <Stack sx={{p:1}} spacing={2}>
            <Box style={{ maxWidth: '100%', margin: 'auto', borderRadius: '20px' }}>
-           <Carousel showArrows={true} showThumbs={true}>
-              {gear?.images?.map((url, index) => (
+           <Carousel showArrows={true} showThumbs={true}> 
+              {gear?.images?.map((url, index) => ( //mapping the images recieving the url and inex
                 <div key={index} style={{ borderRadius: '20px', height: '400px', width: '100%', overflow: 'hidden' }}>
                   <img src={url} alt={`image-${index}`} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                 </div>
@@ -106,7 +111,7 @@ const GearPage = () => {
                 fontWeight: 500 
               }}
             >
-              {gear?.title}
+              {gear?.title} 
             </Typography>
           </Box>
           <Divider/>
@@ -114,15 +119,6 @@ const GearPage = () => {
             <Box>
               <Typography variant='h6' component='span'>{'Price per day: '}</Typography>
               <Typography component='span' >{gear?.price === 0 ? 'Free rental': '€'+gear?.price}</Typography>
-            </Box>
-            <Box sx={{display:'flex',alignItems: 'center'}}>
-              {/*<Typography variant='h6' component='span'>{'Rating: '}</Typography>
-              <Rating
-                name='gear-rating'
-                defaultValue={4}
-                precision={0.5}
-                emptyIcon={<StarBorder/>}
-            />*/}
             </Box>
           </Stack>
           <Stack direction="row" sx={{justifyContent:'space-between',flexWrap:'wrap'}}>

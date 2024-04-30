@@ -24,7 +24,7 @@ const ClusterMap = () => {
   const [clusters, setClusters] = useState([]); // states used for the cluster 
   const [bounds, setBounds] = useState([-180, -85, 180, 85]); // default bounds gotten from the supercluster package 
   const [zoom, setZoom] = useState(0); // state for the zoom
-  const [popupInfo, setPopupInfo] = useState(null);
+  const [popupInfo, setPopupInfo] = useState(null); // state for the popup info 
 
   useEffect(() => { // useeffect used to fetch all the gears in the firt render this is also used in the Gears tab 
     getGears(dispatch);
@@ -124,25 +124,25 @@ const ClusterMap = () => {
               latitude={latitude}
             >
               <Tooltip title={cluster.properties.uName}>
-                <Avatar
+                <Avatar 
                   src={cluster.properties.uPhoto}
                   component={Paper} //shwing the name and the avatar of the user
                   elevation={2}
-                  onClick={() => setPopupInfo(cluster.properties)}  // action when clicks on the avatar 
+                  onClick={() => setPopupInfo(cluster.properties)}  // action when clicks on the avatar the popup info is set and assigned from the cluster
                 />
               </Tooltip>
             </Marker>
           );
         })}
         <GeocoderInput />
-        {popupInfo && (
+        {popupInfo && ( // if properties are already inside the properties then open the pop up component
           <Popup
             longitude={popupInfo.lng}
             latitude={popupInfo.lat}
             maxWidth='auto'
             closeOnClick={false}
             focusAfterOpen={false}
-            onClose={() => setPopupInfo(null)}
+            onClose={() => setPopupInfo(null)} //propeties are reset 
           >
              <Box sx={{ position: 'absolute', top: '1px', right: '1px', zIndex: 2 }}>
                 <IconButton 

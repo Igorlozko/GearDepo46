@@ -87,7 +87,7 @@ const reducer = (state, action) => {
     case 'CLEAR_ADDRESS': // action to clear the address and the filters and filtered rooms to be the same in the state
       return{...state, addressFilter: null, priceFilter: 100, filteredGears: state.gears};
       
-    case 'UPDATE_GEAR':
+    case 'UPDATE_GEAR': // keeps the same state and upload gear to payload
       return{...state, gear: action.payload};
 
     case 'UPDATE_USERS':

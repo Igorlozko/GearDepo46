@@ -3,16 +3,19 @@ import { useValue } from '../../context/ContextProvider';
 import { Card, Box, Typography, Divider } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 
-const WindowGear = ({ popupInfo }) => {
-    const { title, price, images } = popupInfo;
+//This componment is responsible for showing the small window when  user clicks on an icon
+
+const WindowGear = ({ popupInfo }) => { // recieving the pop up information 
+    const { title, price, images } = popupInfo; //populating the information 
     const { dispatch } = useValue();
 
     const handleClick = () => {
-        dispatch({ type: 'UPDATE_GEAR', payload: popupInfo });
+        dispatch({ type: 'UPDATE_GEAR', payload: popupInfo });// opens the gear, open the single page of the gear 
         // Add logic to navigate to the gear page
     };
 
     return (
+        //card componemnt with the styling for the gear 
         <Card
             sx={{
                 width: 230,
@@ -25,9 +28,9 @@ const WindowGear = ({ popupInfo }) => {
                     transform: 'scale(1.02)',
                 },
             }}
-            onClick={handleClick}
+            onClick={handleClick} //action carried out when the card is clicked
         >
-            <Carousel
+            <Carousel //carousel componment which is responsible to containing and mapping the images of the gear
                 autoPlay={false}
                 indicators={true}
                 indicatorContainerProps={{
@@ -39,7 +42,7 @@ const WindowGear = ({ popupInfo }) => {
                     },
                 }}
             >
-                {images.map((url, index) => (
+                {images.map((url, index) => ( // mapping of the images recieving the url and index 
                     <Box key={index}>
                         <img
                             src={url}
@@ -56,7 +59,7 @@ const WindowGear = ({ popupInfo }) => {
             </Carousel>
             <Box sx={{ padding: '5px' }}>
                 <Typography variant="h6" color="black" gutterBottom>
-                    {title}
+                    {title} 
                 </Typography>
                 <Divider sx={{ mb: '5px' }} />
                 <Typography variant="subtitle1" color="black">

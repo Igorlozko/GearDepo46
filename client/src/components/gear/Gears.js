@@ -3,45 +3,50 @@ import { useValue } from '../../context/ContextProvider';
 import { useEffect, useState } from 'react';
 import { getGears } from '../../actions/gear';
 
+// tis componemnt is responsbe for showing the cards of all the gears on the website 
+
 const Gears = () => {
-  const { state: { filteredGears }, dispatch } = useValue();
-  const maxDescriptionLength = 100;
+  const { state: { filteredGears }, dispatch } = useValue(); // extracting the filtered gears 
+  const maxDescriptionLength = 100; // setting the max description lenght 
   const [maxHeight, setMaxHeight] = useState('auto');
 
   useEffect(() => { // useeffect used to fetch all the gears 
     getGears(dispatch);
   }, []);
 
-  const handleGearClick = (selectedGear) => {
-    console.log("Clicked gear ID:", selectedGear._id);
+  const handleGearClick = (selectedGear) => { //managin ght eselected gear 
+    console.log("Clicked gear ID:", selectedGear._id); // printing the gear id selected 
     dispatch({
       type: 'UPDATE_GEAR',
-      payload: selectedGear
+      payload: selectedGear // updating the global state variable 
     });
   };
 
+  //makes sure that the height of each card is the same, called when image finishes loading
   const handleImageLoad = (event) => {
     // Get the maximum height of all cards
     const maxHeight = Math.max(...Array.from(event.target.parentNode.parentNode.parentNode.parentNode.children).map(child => child.clientHeight));
+    //acess the image parent then messures all the cards extracts all the children cards, determines the tallest card and sets the max height 
     // Set the maximum height for all cards
-    setMaxHeight(`${maxHeight}px`);
+    setMaxHeight(`${maxHeight}px`); //sets the maxheight state 
   };
 
   return (
     <Container style={{ minHeight: '100vh', paddingBottom: '50px',paddingTop: '15px'}}>
     <Grid container spacing={2} style={{ height: `calc(100% - 64px - 48px)` }}> {/* Adjust 64px for header and 48px for footer */}
-      {filteredGears.map((gear) => (
+      {filteredGears.map((gear) => ( // mapping the gears 
         <Grid item xs={12} sm={6} md={4} lg={3} key={gear._id}>
           <div style={{ cursor: 'pointer' }} onClick={() => handleGearClick(gear)}>
             <Card elevation={3} sx={{ display: 'flex', flexDirection: 'column', height: maxHeight }}>
               <div style={{ position: 'relative' }}>
                 <img
-                  src={gear.images[0]}
-                  alt={gear.title}
+                  src={gear.images[0]} // adding the first image 
+                  alt={gear.title} // adding the title 
                   loading="lazy"
                   style={{ width: '100%', height: '200px', objectFit: 'cover', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
                   onLoad={handleImageLoad}
                 />
+                {/*adding the users name and image */}
                 <Tooltip title={gear.uName}>
                   <Avatar src={gear.uPhoto} style={{ position: 'absolute', top: '8px', right: '8px', border: '2px solid #fff' }} />
                 </Tooltip>

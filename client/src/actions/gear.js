@@ -16,7 +16,7 @@ export const createGear = async(gear, currentUser, dispatch) =>{ //async functio
     if(result){ // function responsible for creating the room
         dispatch({type:'UPDATE_ALERT', payload:{open:true, severity:'success', message:'Gear has been added successfully'}});//sends an alert
         clearGear(dispatch, currentUser);
-        dispatch({type: 'UPDATE_SECTION', payload:0});
+        dispatch({type: 'UPDATE_SECTION', payload:0}); // dispatches an action to update the section so that the new gear shows up
         dispatch({type: 'UPDATE_GEAR', payload:result});
     }
 
