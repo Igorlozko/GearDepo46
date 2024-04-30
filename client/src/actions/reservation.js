@@ -11,7 +11,7 @@ export const createReservation = async (reservation, currentUser,formattedPaymen
 
     try {
         // Create a payment intent on the server
-        const response = await fetch('http://localhost:5000/reservation/create-payment-intent', {
+        const response = await fetch('https://geardepo.onrender.com/reservation/create-payment-intent', {
            // token: currentUser?.token,
             method: 'POST',
             headers: {

@@ -21,7 +21,7 @@ export const createPaymentIntent = async (req, res) => {
             currency: 'eur',
             payment_method: paymentMethod.id,
             confirm: true,
-            return_url: 'https://localhost3000/checkout/success',
+            return_url: 'https://geardepo.netlify.app/checkout/success',
         }, {
             idempotencyKey: idempotencyKey, // Include idempotency key
         });

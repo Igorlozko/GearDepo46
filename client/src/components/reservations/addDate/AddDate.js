@@ -23,7 +23,7 @@ const AddDate = ({ gearId }) => {
   const fetchReservedDates = async (gearId) => {
     try {
       console.log('Fetching reserved dates for gear:', gearId);
-      const response = await fetch(`http://localhost:5000/reservation/reserved-dates?gearId=${gearId}`);
+      const response = await fetch(`https://geardepo.onrender.com/reservation/reserved-dates?gearId=${gearId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch reserved dates');
       }
